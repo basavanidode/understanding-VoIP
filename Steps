@@ -1,0 +1,55 @@
+VoIP System Setup Using Asterisk and Zoiper
+
+Overview
+This guide describes how to set up a simple VoIP system using Asterisk on Ubuntu as the server and Zoiper as the SIP client. The system will enable two laptops/PCs to communicate over the same network using SIP accounts configured on the Asterisk server.
+This repor contains the .conf files required to properly setup the asterisk voip server in Ubuntu.
+
+Steps to Set Up the VoIP System
+1. Install Asterisk on Ubuntu
+
+Update your system and install Asterisk:
+sudo apt update
+sudo apt install asterisk
+
+Verify the installation:
+asterisk -rvvv
+This will connect you to the Asterisk CLI.
+
+2. Prepare Configuration Files
+
+Configure sip.conf to define two SIP accounts. Use unique usernames, passwords, and other settings.
+Configure extensions.conf to set up a dial plan that enables calling between the defined SIP accounts.
+
+Note: Make sure these configuration files are placed in /etc/asterisk/. If already done, proceed to the next step.
+
+3. Restart Asterisk Service
+To apply the changes made to the configuration files, restart the Asterisk service:
+sudo systemctl restart asterisk
+
+4. Install Zoiper on Two Laptops/PCs
+Download and install Zoiper on two separate laptops/PCs.
+You can download Zoiper from its official website.
+Ensure both laptops/PCs are connected to the same local network as the Asterisk server.
+
+5. Configure Zoiper SIP Accounts
+Open Zoiper on each laptop/PC.
+Add a new SIP account with the following settings:
+Username: Use the SIP username defined in sip.conf (e.g., 1001 for one laptop and 1002 for the other).
+Password: Use the SIP password defined for the corresponding username.
+Domain: Enter the IP address of the Asterisk server.
+Save the account and ensure it registers successfully with the Asterisk server.
+
+6. Test the Setup
+On Laptop 1, use Zoiper to dial the extension configured for Laptop 2 (e.g., 1002).
+On Laptop 2, ensure Zoiper is running and accept the incoming call.
+Verify that audio is working in both directions.
+
+Additional Configuration
+Firewall Settings:
+Ensure the server allows SIP (port 5060/UDP) and RTP (ports 10000–20000/UDP):
+
+sudo ufw allow 5060/udp
+sudo ufw allow 10000:20000/udp
+
+Network Considerations:
+If the laptops are on different networks, configure port forwarding or use a VPN to establish the connection.
